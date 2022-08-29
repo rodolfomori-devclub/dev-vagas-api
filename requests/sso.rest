@@ -1,0 +1,25 @@
+@baseUrl = http://localhost:3000
+
+# Health Check
+GET {{baseUrl}} HTTP/1.1
+
+###
+
+# Authentication 
+# @name authAPI
+POST {{baseUrl}}/sso/auth HTTP/1.1
+Content-Type: application/json
+
+{
+	"origin": "platform",
+	"username": "geovane",
+	"password": "test"
+}
+
+###
+
+@token = {{authAPI.response.body.$.access_token}}
+
+# Get profile from Token
+GET http://localhost:3000/sso/user HTTP/1.1
+Authorization: Bearer {{token}}
